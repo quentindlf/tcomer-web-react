@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router-dom";
 import recipeApi from "../api/recipeApi";
-import { mockRecipe, RecipeModel } from "../mocks/recipe.mock";
+import { RecipeModel } from "../models/recipe.model";
 
 const RecipeList = () => {
   const [recipes, setRecipes] = useState<RecipeModel[]>([]);
