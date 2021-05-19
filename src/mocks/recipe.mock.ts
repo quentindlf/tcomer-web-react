@@ -13,7 +13,7 @@ export const mockStep: StepModel = {
 }
 
 export const mockRecipe: RecipeModel = {
-    id: '001',
+    _id: '001',
     title: "Steak Frites",
     description: "Un plat de fou",
     ingredients: [

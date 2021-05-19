@@ -1,5 +1,5 @@
 export class RecipeModel {
-    id?: string;
+    _id?: string;
     title: string;
     description: string;
     ingredients: IngredientList[];
@@ -18,6 +18,7 @@ export class RecipeModel {
 }
 
 export interface IngredientList {
+    _id?: string;
     ingredient: IngredientModel,
     number: number,
     // faire array unit
@@ -26,6 +27,7 @@ export interface IngredientList {
 
 export interface IngredientModel {
     // Faire liste ingredients / ajouter un ingredient
+    _id?: string;
     name: string,
     location?: string,
     price?: number
@@ -35,6 +37,7 @@ export interface IngredientModel {
 }
 
 export interface StepModel {
+    _id?: string;
     description: string,
     image?: string,
     optional?: boolean

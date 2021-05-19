@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router-dom";
 import {
@@ -20,8 +20,8 @@ const RecipeList = () => {
       <h1>Liste des recettes</h1>
       <ListGroup>
         {state.map((recipe) => (
-          <ListGroup.Item action>
-            <Link to="/recipe-details" className="nav-link">
+          <ListGroup.Item action key={recipe._id}>
+            <Link to={`/recipe-details/${recipe._id}`} className="nav-link">
               {recipe.title}
             </Link>
           </ListGroup.Item>

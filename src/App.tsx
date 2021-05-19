@@ -33,7 +33,7 @@ function App() {
             <Route path="/recipe-list">
               <RecipeList />
             </Route>
-            <Route path="/recipe-details">
+            <Route path="/recipe-details/:id">
               <RecipeDetails />
             </Route>
             <Route path="/recipe-add">
