@@ -16,6 +16,8 @@ type ActionMap<M extends { [index: string]: any }> = {
 enum Types {
     fetch_recipes = 'fetch_recipes',
     fetch_recipe = 'fetch_recipe',
+    add_recipe = 'add_recipe',
+    delete_recipe = 'delete_recipe',
 }
 
 type RecipePayload = {
@@ -25,12 +27,20 @@ type RecipePayload = {
     [Types.fetch_recipe]: {
         recipe: RecipeModel;
     };
+    [Types.add_recipe]: {
+        recipe: RecipeModel;
+    };
+    [Types.delete_recipe]: {
+        id: string;
+    };
 }
 
 export type RecipeContextType = {
     state: RecipeModel[]
     fetchRecipes: () => void
     fetchRecipe: (id: string) => void
+    addRecipe: (recipe: RecipeModel) => void
+    deleteRecipe: (id: string) => void
 }
 
 type RecipeActions = ActionMap<RecipePayload>[keyof ActionMap<RecipePayload>];
@@ -41,7 +51,6 @@ const recipeReducer = (state: RecipeModel[], action: RecipeActions) => {
             return action.payload.recipes;
         case Types.fetch_recipe:
             const index = state.findIndex(recipe => recipe._id === action.payload.recipe._id);
-            console.log(index)
             if (index >= 0) {
                 const newState = state.map(recipe => {
                     if (recipe._id === action.payload.recipe._id) {
@@ -49,13 +58,16 @@ const recipeReducer = (state: RecipeModel[], action: RecipeActions) => {
                     }
                     return recipe;
                 })
-                console.log(newState);
                 return newState;
             } else {
                 const newState = [...state, action.payload.recipe];
-                console.log(newState);
                 return newState;
             }
+        case Types.add_recipe:
+            return [...state, action.payload.recipe]
+        case Types.delete_recipe:
+            const stateTemp = [...state].filter(recipe => recipe._id !== action.payload.id)
+            return stateTemp;
         default:
             return state;
     }
@@ -63,18 +75,34 @@ const recipeReducer = (state: RecipeModel[], action: RecipeActions) => {
 
 const fetchRecipes = (dispatch: any) => async () => {
     const response = await recipeApi.get("/recipes");
-    dispatch({ type: 'fetch_recipes', payload: { recipes: response.data } });
+    dispatch({ type: Types.fetch_recipes, payload: { recipes: response.data } });
 };
 
 const fetchRecipe = (dispatch: any) => async (id: string) => {
     const response = await recipeApi.get("/recipe", { params: { id: id } });
-    dispatch({ type: 'fetch_recipe', payload: { recipe: response.data } });
+    dispatch({ type: Types.fetch_recipe, payload: { recipe: response.data } });
+};
+
+const addRecipe = (dispatch: any) => async (recipe: RecipeModel) => {
+    const response = await recipeApi.post("/recipe", recipe, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    // add try catch
+    dispatch({ type: Types.add_recipe, payload: { recipe: response.data } });
+};
+
+const deleteRecipe = (dispatch: any) => async (id: string) => {
+    const response = await recipeApi.delete(`/recipe/${id}`);
+    // add try catch
+    dispatch({ type: Types.delete_recipe, payload: { id: id } });
 };
 
 export const { Provider, Context } = createDataContext(
     recipeReducer,
     {
-        fetchRecipes, fetchRecipe
+        fetchRecipes, fetchRecipe, addRecipe, deleteRecipe
     },
     []
 );
