@@ -1,20 +1,45 @@
-export class RecipeModel {
-    _id?: string;
+// export class RecipeModelBase {
+//     // _id: string;
+//     title: string;
+//     description: string;
+//     ingredients: IngredientList[];
+//     steps: StepModel[];
+//     preparationLength: string;
+//     video?: string;
+//     // backlog : categorie 'voir aussi'
+
+//     constructor(title = '', description = '', preparationLength = '', ingredients: IngredientList[] = [], steps: StepModel[] = []) {
+//         this.title = title;
+//         this.description = description;
+//         this.ingredients = ingredients;
+//         this.steps = steps;
+//         this.preparationLength = preparationLength;
+//     }
+
+// }
+
+// export class RecipeModel extends RecipeModelBase {
+//     _id: string
+
+//     constructor(_id: string) {
+//         super();
+//         this._id = _id;
+//     }
+// }
+
+export interface RecipeModel extends RecipeModelBase {
+    _id: string
+}
+
+export interface RecipeModelBase {
+    // _id: string;
     title: string;
     description: string;
     ingredients: IngredientList[];
     steps: StepModel[];
     preparationLength: string;
     video?: string;
-    // backlog : categorie 'voir aussi'
-
-    constructor() {
-        this.title = '';
-        this.description = '';
-        this.ingredients = [];
-        this.steps = [];
-        this.preparationLength = '';
-    }
+    //     // backlog : categorie 'voir aussi'
 }
 
 export interface IngredientList {
