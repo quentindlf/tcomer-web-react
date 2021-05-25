@@ -6,12 +6,15 @@ import {
   Context as RecipeContext,
   RecipeContextType,
 } from "../context/recipeContext";
+import { useRouter } from "../hooks/useRouter";
 import styles from "../styles/RecipeList.module.scss";
 
 const RecipeList = () => {
   const { state, fetchRecipes, deleteRecipe } = useContext(
     RecipeContext
   ) as RecipeContextType;
+
+  const router = useRouter();
 
   useEffect(() => {
     fetchRecipes();
@@ -30,6 +33,9 @@ const RecipeList = () => {
                 </Link>
               </ListGroup.Item>
               <Button onClick={() => deleteRecipe(recipe._id)}>Effacer</Button>
+              <Button onClick={() => router.push(`/recipe-edit/${recipe._id}`)}>
+                Editer
+              </Button>
             </div>
           ))
         ) : (
