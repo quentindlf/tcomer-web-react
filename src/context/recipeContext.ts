@@ -101,7 +101,7 @@ const fetchRecipes = (dispatch: any) => async () => {
 };
 
 const fetchRecipe = (dispatch: any) => async (id: string) => {
-    const response = await recipeApi.get("/recipe", { params: { id: id } });
+    const response = await recipeApi.get(`/recipe/${id}`);
     dispatch({ type: Types.fetch_recipe, payload: { recipe: response.data } });
 };
 
