@@ -9,5 +9,5 @@ export interface RecipeFormModelRaw {
 export interface IngredientListModelTEMP {
     name: string;
     number: number;
-    unit: string | null;
+    unit: string;
 }

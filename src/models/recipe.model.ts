@@ -47,7 +47,7 @@ export interface IngredientList {
     ingredient: IngredientModel,
     number: number,
     // faire array unit
-    unit: string | null
+    unit: string
 }
 
 export interface IngredientModel {

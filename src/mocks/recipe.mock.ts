@@ -18,7 +18,7 @@ export const mockRecipe: RecipeModel = {
     description: "Un plat de fou",
     ingredients: [
         { ingredient: mockSteak, number: 200, unit: 'grammes' },
-        { ingredient: mockIngredientPommedeterre, number: 4, unit: null }
+        { ingredient: mockIngredientPommedeterre, number: 4, unit: 'unit' }
     ],
     steps: [mockStep, mockStep],
     preparationLength: '20min'

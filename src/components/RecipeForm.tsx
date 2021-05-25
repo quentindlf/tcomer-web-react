@@ -41,6 +41,8 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
       : [defaultStep],
   };
 
+  console.log("new Render");
+
   const [title, setTitle] = useState(initialState.title);
   const [description, setDescription] = useState(initialState.description);
   const [preparationLength, setPreparationLength] = useState(
@@ -133,7 +135,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                 <Form.Control
                   required
                   type="text"
-                  //   value={ingredients[index].name}
+                  value={ingredients[index].name}
                   placeholder="Enter name"
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "name")
@@ -144,7 +146,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                 <Form.Control
                   required
                   type="text"
-                  //   value={ingredients[index].number}
+                  value={ingredients[index].number}
                   placeholder="Enter number"
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "number")
@@ -155,6 +157,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                 <Form.Control
                   required
                   type="text"
+                  value={ingredients[index].unit}
                   placeholder="Enter unit"
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "unit")
@@ -173,7 +176,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
               required
               as="textarea"
               type="text"
-              //   value={steps[index].description}
+              value={steps[index].description}
               placeholder="Describe your step"
               onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                 handleSteps(ev.target.value, index, "description")

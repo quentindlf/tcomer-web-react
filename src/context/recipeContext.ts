@@ -121,8 +121,8 @@ const deleteRecipe = (dispatch: any) => async (id: string) => {
     dispatch({ type: Types.delete_recipe, payload: { id: id } });
 };
 
-const editRecipe = (dispatch: any) => async (id: string) => {
-    const response = await recipeApi.delete(`/recipe/${id}`);
+const editRecipe = (dispatch: any) => async (recipe: RecipeModel) => {
+    const response = await recipeApi.put(`/recipe/${recipe._id}`, recipe);
     // add try catch
     dispatch({ type: Types.edit_recipe, payload: { recipe: response.data } });
 };

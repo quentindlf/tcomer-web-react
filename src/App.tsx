@@ -4,6 +4,7 @@ import RecipeList from "./pages/RecipeList";
 import RecipeDetails from "./pages/RecipeDetails";
 import RecipeAdd from "./pages/RecipeAdd";
 import { Provider as RecipeProvider } from "./context/recipeContext";
+import RecipeEdit from "./pages/RecipeEdit";
 
 function App() {
   return (
@@ -38,6 +39,9 @@ function App() {
             </Route>
             <Route path="/recipe-add">
               <RecipeAdd />
+            </Route>
+            <Route path="/recipe-edit/:id">
+              <RecipeEdit />
             </Route>
           </Switch>
         </div>
