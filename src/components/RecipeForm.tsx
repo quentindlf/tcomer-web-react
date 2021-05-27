@@ -41,7 +41,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
       : [defaultStep],
   };
 
-  console.log("new Render");
+  console.log("new Render Form");
 
   const [title, setTitle] = useState(initialState.title);
   const [description, setDescription] = useState(initialState.description);
