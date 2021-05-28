@@ -79,6 +79,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
     } else {
       ingredientTemp[type] = value;
     }
+    console.log(ingredientsTemp);
     setIngredients(ingredientsTemp);
   };
 
@@ -184,7 +185,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                   as="select"
                   custom
                   required
-                  value={ingredients[index].unit?.name || ""}
+                  value={ingredients[index].unit?._id || ""}
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "unit")
                   }
