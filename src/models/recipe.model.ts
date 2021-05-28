@@ -1,31 +1,5 @@
-// export class RecipeModelBase {
-//     // _id: string;
-//     title: string;
-//     description: string;
-//     ingredients: IngredientList[];
-//     steps: StepModel[];
-//     preparationLength: string;
-//     video?: string;
-//     // backlog : categorie 'voir aussi'
 
-//     constructor(title = '', description = '', preparationLength = '', ingredients: IngredientList[] = [], steps: StepModel[] = []) {
-//         this.title = title;
-//         this.description = description;
-//         this.ingredients = ingredients;
-//         this.steps = steps;
-//         this.preparationLength = preparationLength;
-//     }
-
-// }
-
-// export class RecipeModel extends RecipeModelBase {
-//     _id: string
-
-//     constructor(_id: string) {
-//         super();
-//         this._id = _id;
-//     }
-// }
+import { UnitModel } from "./unit.model";
 
 export interface RecipeModel extends RecipeModelBase {
     _id: string
@@ -47,7 +21,7 @@ export interface IngredientList {
     ingredient: IngredientModel,
     number: number,
     // faire array unit
-    unit: string
+    unit: UnitModel
 }
 
 export interface IngredientModel {

@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { RecipeModel, StepModel } from "../models/recipe.model";
 import {
-  IngredientListModelTEMP,
+  IngredientListModelTEMPInit,
+  IngredientListModelTEMPRaw,
   RecipeFormModelRaw,
 } from "../models/recipe-helpers.model";
+import {
+  Context as UnitContext,
+  UnitContextType,
+} from "../context/unitContext";
+import { UnitModel } from "../models/unit.model";
 
 interface RecipeFormProps {
   recipe?: RecipeModel;
@@ -14,8 +20,18 @@ interface RecipeFormProps {
 }
 
 const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
+  const { state: unitState, fetchUnits } = useContext(
+    UnitContext
+  ) as UnitContextType;
+
+  useEffect(() => {
+    if (!unitState || (unitState && !unitState.length)) {
+      fetchUnits();
+    }
+  }, []);
+
   const defaultStep = { description: "" };
-  const defaultIngredient = { name: "", number: 0, unit: "" };
+  const defaultIngredient = { name: "", number: 0, unit: undefined };
 
   const initialState = {
     title: recipe?.title ?? "",
@@ -23,8 +39,8 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
     preparationLength: recipe?.preparationLength ?? "",
     ingredients: recipe?.ingredients
       ? recipe?.ingredients.reduce(
-          (ingredientList: IngredientListModelTEMP[], ingredient) => {
-            const ingredientForm: IngredientListModelTEMP = {
+          (ingredientList: IngredientListModelTEMPInit[], ingredient) => {
+            const ingredientForm: IngredientListModelTEMPInit = {
               name: ingredient.ingredient.name,
               number: ingredient.number,
               unit: ingredient.unit,
@@ -51,10 +67,18 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
   const [ingredients, setIngredients] = useState(initialState.ingredients);
   const [steps, setSteps] = useState(initialState.steps);
 
-  const handleIngredients = (value: string, index: number, type: string) => {
+  const handleIngredients = (
+    value: string | UnitModel,
+    index: number,
+    type: string
+  ) => {
     const ingredientsTemp = [...ingredients];
     const ingredientTemp: any = ingredientsTemp[index];
-    ingredientTemp[type] = value;
+    if (type === "unit") {
+      ingredientTemp[type] = unitState.find((unit) => unit._id === value);
+    } else {
+      ingredientTemp[type] = value;
+    }
     setIngredients(ingredientsTemp);
   };
 
@@ -66,12 +90,14 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
   };
 
   const submitForm = () => {
+    console.log(ingredients);
     if (title && description && preparationLength && ingredients && steps) {
+      const ingredientsRaw = [...ingredients] as IngredientListModelTEMPRaw[];
       const recipeFormRaw = {
         title,
         description,
         preparationLength,
-        ingredients,
+        ingredients: ingredientsRaw,
         steps,
       };
       onSubmit(recipeFormRaw);
@@ -155,14 +181,23 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
               </Col>
               <Col>
                 <Form.Control
+                  as="select"
+                  custom
                   required
-                  type="text"
-                  value={ingredients[index].unit}
-                  placeholder="Enter unit"
+                  value={ingredients[index].unit?.name || ""}
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "unit")
                   }
-                />
+                >
+                  <option key="blank" disabled value="">
+                    Select unit
+                  </option>
+                  {unitState.map((unit) => (
+                    <option value={unit._id} key={unit._id}>
+                      {unit.name}
+                    </option>
+                  ))}
+                </Form.Control>
               </Col>
             </Row>
           ))}
