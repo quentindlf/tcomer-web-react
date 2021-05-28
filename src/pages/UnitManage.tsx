@@ -15,30 +15,41 @@ const UnitManage = () => {
     UnitContext
   ) as UnitContextType;
 
+  const defaultTypes = ["mass", "volume", "base"];
+  const defaultSystems = ["metric", "imperial", "US", "base"];
+
   const [selectedUnit, setSelectedUnit] =
     useState<UnitModel | undefined>(undefined);
   const [name, setName] = useState(selectedUnit?.name || "");
   const [value, setValue] = useState(selectedUnit?.value || "");
+  const [system, setSystem] = useState(selectedUnit?.system || "");
+  const [type, setType] = useState(selectedUnit?.type || "");
 
   useEffect(() => {
     fetchUnits();
   }, []);
 
   const submitForm = () => {
-    const unitRaw: UnitModelBase = { name, value };
-    addUnit(unitRaw);
+    if (name && value && system && type) {
+      const unitRaw: UnitModelBase = { name, value, system, type };
+      addUnit(unitRaw);
+    }
   };
 
   const selectUnit = (unit: UnitModel) => {
     setSelectedUnit(unit);
     setName(unit.name);
     setValue(unit.value);
+    setSystem(unit.system);
+    setType(unit.type);
   };
 
   const resetForm = () => {
     setSelectedUnit(undefined);
     setName("");
     setValue("");
+    setSystem("");
+    setType("");
   };
 
   return (
@@ -99,6 +110,46 @@ const UnitManage = () => {
                   setValue(ev.target.value)
                 }
               />
+            </Form.Group>
+            <Form.Group controlId="formUnit.system">
+              <Form.Label>System</Form.Label>
+              <Form.Control
+                as="select"
+                required
+                value={system}
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
+                  setSystem(ev.target.value)
+                }
+              >
+                <option key="blank" disabled value="">
+                  Select system
+                </option>
+                {defaultSystems.map((system, index) => (
+                  <option value={system} key={index}>
+                    {system}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formUnit.type">
+              <Form.Label>Type</Form.Label>
+              <Form.Control
+                as="select"
+                required
+                value={type}
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
+                  setType(ev.target.value)
+                }
+              >
+                <option key="blank" disabled value="">
+                  Select type
+                </option>
+                {defaultTypes.map((type, index) => (
+                  <option value={type} key={index}>
+                    {type}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Button variant="primary" onClick={submitForm}>
               {selectedUnit ? "Edit" : "Add"}
