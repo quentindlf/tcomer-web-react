@@ -1,30 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
-import {
-  Context as RecipeContext,
-  RecipeContextType,
-} from "../context/recipeContext";
 import { useParams } from "react-router";
-import { RecipeModel } from "../models/recipe.model";
+import useFetchRecipe from "../hooks/useFetchRecipe";
+import styles from "../styles/RecipeDetail.module.scss";
 
 const RecipeDetails = () => {
-  const { state, fetchRecipe } = useContext(RecipeContext) as RecipeContextType;
-  const [recipe, setRecipe] = useState<RecipeModel | undefined>(undefined);
-
   const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    const recipe =
-      state.find((recipe) => {
-        return recipe._id === id;
-      }) || undefined;
-
-    if (!recipe) {
-      fetchRecipe(id);
-    } else {
-      setRecipe(recipe);
-    }
-  }, [state]);
+  const recipe = useFetchRecipe(id);
 
   return recipe ? (
     <>
@@ -33,12 +15,12 @@ const RecipeDetails = () => {
       <p>Temps de préparation : {recipe.preparationLength}</p>
       <div>
         Ingrédients :
-        <ListGroup horizontal>
+        <ListGroup horizontal className={styles["list-container"]}>
           {recipe.ingredients.map((ingredient) => (
             <ListGroup.Item key={ingredient._id}>
               <div>
                 <p>
-                  {ingredient.number} {ingredient.unit}
+                  {ingredient.number} {ingredient.unit.name}
                 </p>
                 <p>
                   {ingredient.ingredient.name}{" "}
