@@ -13,6 +13,7 @@ export interface RecipeModelBase {
     steps: StepModel[];
     preparationLength: string;
     video?: string;
+    links?: string[];
     //     // backlog : categorie 'voir aussi'
 }
 

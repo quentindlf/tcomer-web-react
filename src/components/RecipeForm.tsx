@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { RecipeModel, StepModel } from "../models/recipe.model";
@@ -55,6 +56,11 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
           return [...steps, { ...step }];
         }, [])
       : [defaultStep],
+    links: recipe?.links
+      ? recipe?.links.reduce((links: string[], link) => {
+          return [...links, link];
+        }, [])
+      : [""],
   };
 
   console.log("new Render Form");
@@ -66,6 +72,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
   );
   const [ingredients, setIngredients] = useState(initialState.ingredients);
   const [steps, setSteps] = useState(initialState.steps);
+  const [links, setLinks] = useState(initialState.links);
 
   const handleIngredients = (
     value: string | UnitModel,
@@ -90,6 +97,12 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
     setSteps(stepsTemp);
   };
 
+  const handleLinks = (value: string, index: number) => {
+    const linksTemp = [...links];
+    linksTemp[index] = value;
+    setLinks(linksTemp);
+  };
+
   const submitForm = () => {
     console.log(ingredients);
     if (title && description && preparationLength && ingredients && steps) {
@@ -108,8 +121,11 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
   const addIngredient = () => {
     setIngredients([...ingredients, defaultIngredient]);
   };
-  const addSteps = () => {
+  const addStep = () => {
     setSteps([...steps, defaultStep]);
+  };
+  const addLink = () => {
+    setLinks([...links, ""]);
   };
 
   return (
@@ -140,6 +156,21 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
               setDescription(ev.target.value)
             }
           />
+        </Form.Group>
+        <Form.Group controlId="formRecipe.links">
+          <Form.Label>Liens</Form.Label>
+          <Button onClick={addLink}>Add</Button>
+          {links.map((link, index) => (
+            <Form.Control
+              key={index}
+              type="url"
+              value={link}
+              placeholder="Ajoute un lien"
+              onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
+                handleLinks(ev.target.value, index)
+              }
+            />
+          ))}
         </Form.Group>
         <Form.Group controlId="formRecipe.preparationLength">
           <Form.Label>Temps de préparation total</Form.Label>
@@ -194,7 +225,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                     Select unit
                   </option>
                   {unitState.map((unit) => (
-                    <option value={unit._id} key={unit._id}>
+                    <option value={unit._id} title={unit.value} key={unit._id}>
                       {unit.name}
                     </option>
                   ))}
@@ -205,14 +236,14 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
         </Form.Group>
         <Form.Group controlId="formRecipe.steps">
           <Form.Label>Etapes</Form.Label>
-          <Button onClick={addSteps}>Add</Button>
+          <Button onClick={addStep}>Add</Button>
           {steps.map((step, index) => (
             <Form.Control
               key={index}
               required
               as="textarea"
               type="text"
-              value={steps[index].description}
+              value={step.description}
               placeholder="Describe your step"
               onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                 handleSteps(ev.target.value, index, "description")

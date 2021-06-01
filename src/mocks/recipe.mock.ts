@@ -25,5 +25,6 @@ export const mockRecipe: RecipeModel = {
         { ingredient: mockIngredientPommedeterre, number: 4, unit: mockUnit }
     ],
     steps: [mockStep, mockStep],
-    preparationLength: '20min'
+    preparationLength: '20min',
+    links: ['blabla.com', 'blabla2.com']
 };
