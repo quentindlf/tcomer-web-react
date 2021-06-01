@@ -162,7 +162,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                 <Form.Control
                   required
                   type="text"
-                  value={ingredients[index].name}
+                  value={ing.name}
                   placeholder="Enter name"
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "name")
@@ -173,7 +173,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                 <Form.Control
                   required
                   type="text"
-                  value={ingredients[index].number}
+                  value={ing.number}
                   placeholder="Enter number"
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "number")
@@ -185,7 +185,7 @@ const RecipeForm = ({ recipe, onSubmit }: RecipeFormProps) => {
                   as="select"
                   custom
                   required
-                  value={ingredients[index].unit?._id || ""}
+                  value={ing.unit?._id || ""}
                   onChange={(ev: React.ChangeEvent<HTMLInputElement>): void =>
                     handleIngredients(ev.target.value, index, "unit")
                   }
